@@ -6,6 +6,7 @@ const listFragment = new DocumentFragment()
 div.before(listFragment)
 
 async function getAllObs() {
+
     const respons = await fetch('/get-obs', {
         method: 'get',
         headers: {
@@ -13,8 +14,7 @@ async function getAllObs() {
         }
     });
 
-    const output = await respons.json()
-    return output
+    return await respons.json()
 }
 
 async function printAllObs() {
