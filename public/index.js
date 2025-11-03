@@ -1,9 +1,10 @@
 const div = document.querySelector('div')
 
-const listFragment = new DocumentFragment()
-    .appendChild(document.createElement("ul"))
+const listFragment = new DocumentFragment();
+const ul = document.createElement('ul');
+listFragment.appendChild(ul);
 
-div.before(listFragment)
+div.appendChild(listFragment);
 
 async function getAllObs() {
 
@@ -14,18 +15,24 @@ async function getAllObs() {
         }
     });
 
-    return await respons.json()
+    const output = await respons.json()
+    return output;
 }
 
 async function printAllObs() {
     const allObs = await getAllObs();
-    console.log(allObs)
+    console.log(allObs);
     for (const obs of allObs) {
-        const newLi = document.createElement("li")
-        newLi.textContent = obs.location
-        listFragment.appendChild(newLi)
-        console.log(obs)
+        const newObs = document.createElement("li");
+        const obsH1 = document.createElement('h1')
+        const obsH2 = document.createElement('h2')
+        obsH1.textContent = obs.location;
+        obsH2.textContent = obs.datetime;
+        newObs.appendChild(obsH1);
+        newObs.appendChild(obsH2);
+        ul.appendChild(newObs)
     }
 }
+
 
 printAllObs();
