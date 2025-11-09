@@ -1,38 +1,85 @@
-const div = document.querySelector('div')
+const map = L.map('map');
+let listOfMunicipalities;
+let listOfPostalCodes;
+let listOfObservations;
 
-const listFragment = new DocumentFragment();
-const ul = document.createElement('ul');
-listFragment.appendChild(ul);
+const denmarkBounds = [
+    [54.5, 7.5],
+    [57.9, 15.3]
+];
 
-div.appendChild(listFragment);
+map.setMaxBounds(denmarkBounds);
+map.fitBounds(denmarkBounds);
 
-async function getAllObs() {
+map.getContainer().style.backgroundColor = 'white';
 
-    const respons = await fetch('/get-obs', {
+async function fetchDataToList() {
+    municipalitiesResponse = await fetch('municipalities.geojson');
+    listOfMunicipalities = await municipalitiesResponse.json();
+
+    postalCodesResponse = await fetch('postcode.json');
+    listOfPostalCodes = await postalCodesResponse.json();
+
+    const observationResponse = await fetch('/get-obs', {
         method: 'get',
         headers: {
             'Accept': 'application/json',
         }
     });
+    listOfObservations = await observationResponse.json()
 
-    const output = await respons.json()
-    return output;
+    return true;
 }
 
-async function printAllObs() {
-    const allObs = await getAllObs();
-    console.log(allObs);
-    for (const obs of allObs) {
-        const newObs = document.createElement("li");
-        const obsH1 = document.createElement('h1')
-        const obsH2 = document.createElement('h2')
-        obsH1.textContent = obs.location;
-        obsH2.textContent = obs.datetime;
-        newObs.appendChild(obsH1);
-        newObs.appendChild(obsH2);
-        ul.appendChild(newObs)
+// 3. Tegn kommuner med tydelige kanter
+async function addMunicipalities() {
+    await fetchDataToList();
+
+    const obsPrMunicipaliti = {};
+
+    for (const obs of listOfObservations) {
+        const locationArray = obs.location.split(" ")
+        const postcode = locationArray[0]
+        for (const data of listOfPostalCodes) {
+            if (data.nr === postcode) {
+                for (const municipaliti of data.kommuner) {
+                    if (!obsPrMunicipaliti[municipaliti.navn]) {
+                        obsPrMunicipaliti[municipaliti.navn] = 0;
+                    }
+                    obsPrMunicipaliti[municipaliti.navn]++;
+                }
+            }
+        }
     }
+    L.geoJSON(listOfMunicipalities, {
+        style: {
+            color: 'black',
+            weight: 0.5,
+            fillColor: '#df3030',
+            fillOpacity: 1
+        },
+
+        onEachFeature: (feature, layer) => {
+            const name = feature.properties.label_dk
+            const counted = obsPrMunicipaliti[name] || 0;
+
+            layer.bindTooltip(`<b>${name} - ${counted}</b>`, {direction: 'top', sticky: true});
+
+            layer.on('mouseover', () => {
+                layer.bindTooltip(`<b>${name} - ${counted}</b>`, {direction: 'top'}).openTooltip();
+                layer.setStyle({
+                    fillColor: '#305def', // skift farve på hover
+                });
+            });
+            layer.on('mouseout', () => {
+                layer.closeTooltip();
+                layer.setStyle({
+                    fillColor: '#df3030', // tilbage til original farve
+                });
+            });
+        }
+
+    }).addTo(map);
 }
 
-
-printAllObs();
+addMunicipalities();
