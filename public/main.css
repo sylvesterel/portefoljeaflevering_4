@@ -62,9 +62,36 @@ body{
     grid-template-columns: 1.15fr .85fr;
     gap:24px;
 }
+.map{
+    width: 100%;
+    z-index: 1;
+}
+.counting-scheme{
+    background: var(--panel);
+    border:1px solid #223047;
+    border-radius:8px;
+    padding:16px;
+    align-self:start;
+    max-width: 300px;
+    margin-left: 100px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.35);
+}
+.counting-scheme-header{
+    display:flex; align-items:center; gap:10px; margin-bottom:8px;
+}
+.counting-scheme h3{ margin:0; font-size:16px; color:#f3f4f6; }
+.counting-scheme ul{
+    margin:8px 0 14px; padding-left:18px; color:#dbeafe;
+}
+.counting-scheme li{
+    margin:6px 0;
+}
+.counting-scheme .ghost{ width:100%; }
+
 
 /* Kortet med chart */
 .chart-card{
+    place-content: last;
     background:#0e1628;
     border:1px solid #0b1b31;
     border-radius:8px;
