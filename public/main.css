@@ -26,7 +26,7 @@ body{
     padding:14px 22px;
     background: linear-gradient(180deg, #0b1224 0%, #0b1428 100%);
     border-bottom:1px solid #0b1b31;
-    position:sticky; top:0; z-index:10;
+    position:sticky; top:0; z-index:1500;
 }
 .brand{ display:flex; align-items:center; gap:10px; font-weight:600; color:#cfe8ff; }
 .logo-dot{ width:26px; height:26px; border-radius:50%;
