@@ -3,6 +3,7 @@ const map = L.map('map'); //Import map fra index. Leaflet er importet i index.ht
 let listOfMunicipalities;
 let listOfPostalCodes;
 let listOfObservations;
+let observationPerMunicipaliti = {};
 
 const munName = document.querySelector('#mun-name')
 const munAmount = document.querySelector('#mun-amount')
@@ -24,13 +25,13 @@ function getColor(count) { //getColor er lavet af chatGPT
     return count > 200 ? '#002d13' :  // meget mørk grøn
         count > 150 ? '#00441b' :
             count > 100 ? '#006d2c' :
-                count > 75  ? '#238b45' :
-                count > 50  ? '#238b45' :
-                    count > 20  ? '#41ab5d' :
-                        count > 10  ? '#74c476' :
-                            count > 5   ? '#a1d99b' :
-                                count > 0   ? '#c7e9c0' :
-                                    '#e5f5e0'; // ingen observationer
+                count > 75 ? '#238b45' :
+                    count > 50 ? '#238b45' :
+                        count > 20 ? '#41ab5d' :
+                            count > 10 ? '#74c476' :
+                                count > 5 ? '#a1d99b' :
+                                    count > 0 ? '#c7e9c0' :
+                                        '#e5f5e0'; // ingen observationer
 }
 
 // Henter data om danske kommuner fra en geoJSON, postnumre fra en postcode.json der kommer fra DAWA API
@@ -54,33 +55,40 @@ async function fetchDataToList() {
     return true;
 }
 
+async function getObservationPrMunicipaliti() {
+    for (const observation of listOfObservations) {
+        const locationArray = observation.location.split(" ")
+        const postcode = locationArray[0]
+        for (const data of listOfPostalCodes) {
+            if (data.nr !== postcode) {
+                continue;
+            }
+            for (const municipaliti of data.kommuner) {
+                const name = municipaliti.navn
+                if (!observationPerMunicipaliti[name]) {
+                    observationPerMunicipaliti[name] = 0;
+                }
+                observationPerMunicipaliti[name]++;
+            }
+
+        }
+    }
+}
+
 // Tegner kommuner og tæller antal observationer pr. kommune.
 // Fordi at en kommune kan have flere postkoder, bruger vi en postcode.json som fortæller hvilken kommune hver postnumre ligger i.
 // Postcode.json kommer fra et DAWA api endpoint.
 
-async function addMunicipalities() {
-    await fetchDataToList();
+async function displayMuniciplaitis() {
 
-    const obsPrMunicipaliti = {};
+    await fetchDataToList(); // Fetcher data om observationer, kommuner og postnumre til vores lister
 
-    for (const obs of listOfObservations) {
-        const locationArray = obs.location.split(" ")
-        const postcode = locationArray[0]
-        for (const data of listOfPostalCodes) {
-            if (data.nr === postcode) {
-                for (const municipaliti of data.kommuner) {
-                    if (!obsPrMunicipaliti[municipaliti.navn]) {
-                        obsPrMunicipaliti[municipaliti.navn] = 0;
-                    }
-                    obsPrMunicipaliti[municipaliti.navn]++;
-                }
-            }
-        }
-    }
+    await getObservationPrMunicipaliti(); // Laver et object med antal observationer pr. kommune ud fra postnumre.
+
     L.geoJSON(listOfMunicipalities, {
         style: feature => {
             const name = feature.properties.label_dk;
-            const counted = obsPrMunicipaliti[name] || 0;
+            const counted = observationPerMunicipaliti[name] || 0;
             return {
                 color: 'black',
                 weight: 0.5,
@@ -110,8 +118,8 @@ async function addMunicipalities() {
                 layer.closeTooltip();
             });
             layer.on('click', () => {
-                const counted = obsPrMunicipaliti[name] || 0;
-                munName.textContent = `${name}`
+                const counted = observationPerMunicipaliti[name] || 0;
+                munName.textContent = `Valgte kommune: ${name}`
                 munAmount.textContent = `Antal observationer: ${counted}`
                 munPeriod.textContent = `Periode: 10. oktober 1995 - 12. december 2023`
             });
@@ -120,4 +128,4 @@ async function addMunicipalities() {
     }).addTo(map);
 }
 
-addMunicipalities();
+displayMuniciplaitis();
