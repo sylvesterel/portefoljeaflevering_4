@@ -52,7 +52,7 @@ body{
 }
 .page::before{
     content:"";
-    position:absolute; left:18px; top:60px; bottom:40px; width:10px;
+    position:absolute; left:56px; top:60px; bottom:40px; width:10px;
     background: linear-gradient(180deg, rgba(57,255,20,.95), rgba(57,255,20,.15));
     box-shadow:
             0 0 12px var(--neon),
