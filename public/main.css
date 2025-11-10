@@ -26,7 +26,8 @@ body{
     padding:14px 22px;
     background: linear-gradient(180deg, #0b1224 0%, #0b1428 100%);
     border-bottom:1px solid #0b1b31;
-    position:sticky; top:0; z-index:10;
+    position: relative;
+    z-index: 1;
 }
 .brand{ display:flex; align-items:center; gap:10px; font-weight:600; color:#cfe8ff; }
 .logo-dot{ width:26px; height:26px; border-radius:50%;
@@ -45,6 +46,8 @@ body{
 .page{
     position:relative;
     padding:22px;
+    position: relative;
+    z-index: 1;
 }
 .page::before{
     content:"";
@@ -61,6 +64,16 @@ body{
     display:grid;
     grid-template-columns: 1.15fr .85fr;
     gap:24px;
+    position: relative;
+    z-index: 1;
+}
+#stars {
+    position: fixed;
+    inset: 0;             /* top:0; right:0; bottom:0; left:0 */
+    display: block;
+    z-index: 0;           /* start på 0 for at ligge OVER body-baggrunden */
+    background: #0b1428;  /* mørk bund under stjernerne, valgfri */
+    pointer-events: none; /* blokér ikke klik på kort/knapper */
 }
 #map{
     width: 100%;
