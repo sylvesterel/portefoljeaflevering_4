@@ -48,12 +48,18 @@ body{
 }
 .page::before{
     content:"";
-    position:absolute; left:18px; top:60px; bottom:40px; width:10px;
+    position:absolute; left:56px; top:60px; bottom:40px; width:10px;
     background: linear-gradient(180deg, rgba(57,255,20,.95), rgba(57,255,20,.15));
     box-shadow:
             0 0 12px var(--neon),
             inset 0 0 6px rgba(57,255,20,.8);
     border-radius:6px;
+}
+#image {
+    content: "";
+    height: 8%;
+    width: 8%;
+    position: absolute; left: 0; top: 5px;
 }
 .content{
     max-width:5000px;
@@ -91,7 +97,6 @@ body{
 
 /* Kortet med chart */
 .chart-card{
-    place-content: last;
     background:#0e1628;
     border:1px solid #0b1b31;
     border-radius:8px;
