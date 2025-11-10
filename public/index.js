@@ -14,13 +14,16 @@ map.fitBounds(denmarkBounds);
 map.getContainer().style.backgroundColor = 'white';
 
 function getColor(count) {
-    return count > 100 ? '#800026' :
-        count > 50 ? '#BD0026' :
-        count > 20 ? '#E31A1C' :
-        count > 10 ? '#FC4E2A' :
-        count > 5 ? '#FD8D3C' :
-        count > 0 ? '#FEB24C' :
-                    '#FFEDA0';
+    return count > 200 ? '#002d13' :  // meget mørk grøn
+        count > 150 ? '#00441b' :
+            count > 100 ? '#006d2c' :
+                count > 75  ? '#238b45' :
+                count > 50  ? '#238b45' :
+                    count > 20  ? '#41ab5d' :
+                        count > 10  ? '#74c476' :
+                            count > 5   ? '#a1d99b' :
+                                count > 0   ? '#c7e9c0' :
+                                    '#e5f5e0'; // ingen observationer
 }
 
 async function fetchDataToList() {
@@ -74,22 +77,29 @@ async function addMunicipalities() {
         },
 
         onEachFeature: (feature, layer) => {
-            const name = feature.properties.label_dk
+            const name = feature.properties.label_dk;
             const counted = obsPrMunicipaliti[name] || 0;
 
-            layer.bindTooltip(`<b>${name} - ${counted}</b>`, {direction: 'top', sticky: true});
+            // Tooltip bindes én gang
+            layer.bindTooltip(`<b>${name}</b><br>${counted} observationer`, {
+                direction: 'top',
+                sticky: true
+            });
 
             layer.on('mouseover', () => {
-                layer.bindTooltip(`<b>${name} - ${counted}</b>`, {direction: 'top'}).openTooltip();
                 layer.setStyle({
-                    fillColor: '#305def', // skift farve på hover
+                    weight: 2,
+                    fillOpacity: 1
                 });
+                layer.openTooltip();
             });
+
             layer.on('mouseout', () => {
-                layer.closeTooltip();
                 layer.setStyle({
-                    fillColor: '#df3030', // tilbage til original farve
+                    weight: 0.5,
+                    fillOpacity: 0.9
                 });
+                layer.closeTooltip();
             });
         }
 
