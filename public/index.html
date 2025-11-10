@@ -9,10 +9,10 @@
         #map { height: 180px; }
     </style>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-
-    <!-- VIGTIGT: stylesheet skal pege på .css (ikke .js) -->
     <link rel="stylesheet" href="main.css"/>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 </head>
@@ -31,17 +31,15 @@
 </header>
 <body>
 <div class="page">
-    <img id="image" src="ufo-img.png" alt="picture of UFO">
     <section class="content">
         <div id="map" style="height: 600px;"></div>
         <aside class="counting-scheme">
             <div class="counting-header">
-                <h3>UFO-ove rsigt</h3>
+                <h3>Se information på valgte kommune</h3>
             </div>
-            <ul>
-                <li></li>
-                <li></li>
-            </ul>
+            <h4 id="mun-name">Vælg en kommune</h4>
+            <p id="mun-amount">Antal observationer: 0</p>
+            <p id="mun-period"></p>
         </aside>
         <div class="chart-card">
             <div class="controls">

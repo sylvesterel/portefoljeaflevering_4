@@ -1,7 +1,14 @@
-const map = L.map('map');
+const map = L.map('map'); //Import map fra index. Leaflet er importet i index.html.
+
 let listOfMunicipalities;
 let listOfPostalCodes;
 let listOfObservations;
+
+const munName = document.querySelector('#mun-name')
+const munAmount = document.querySelector('#mun-amount')
+const munPeriod = document.querySelector('#mun-period')
+
+// Sætter Danmarks grænser for ikke at se resten af verdens kortet
 
 const denmarkBounds = [
     [54.5, 7.5],
@@ -11,9 +18,9 @@ const denmarkBounds = [
 map.setMaxBounds(denmarkBounds);
 map.fitBounds(denmarkBounds);
 
-map.getContainer().style.backgroundColor = 'white';
+map.getContainer().style.backgroundColor = '#0e1628';
 
-function getColor(count) {
+function getColor(count) { //getColor er lavet af chatGPT
     return count > 200 ? '#002d13' :  // meget mørk grøn
         count > 150 ? '#00441b' :
             count > 100 ? '#006d2c' :
@@ -25,6 +32,9 @@ function getColor(count) {
                                 count > 0   ? '#c7e9c0' :
                                     '#e5f5e0'; // ingen observationer
 }
+
+// Henter data om danske kommuner fra en geoJSON, postnumre fra en postcode.json der kommer fra DAWA API
+// og henter observationer fra vores server.js, som henter fra en MySQL database.
 
 async function fetchDataToList() {
     municipalitiesResponse = await fetch('municipalities.geojson');
@@ -44,7 +54,10 @@ async function fetchDataToList() {
     return true;
 }
 
-// 3. Tegn kommuner med tydelige kanter
+// Tegner kommuner og tæller antal observationer pr. kommune.
+// Fordi at en kommune kan have flere postkoder, bruger vi en postcode.json som fortæller hvilken kommune hver postnumre ligger i.
+// Postcode.json kommer fra et DAWA api endpoint.
+
 async function addMunicipalities() {
     await fetchDataToList();
 
@@ -78,13 +91,8 @@ async function addMunicipalities() {
 
         onEachFeature: (feature, layer) => {
             const name = feature.properties.label_dk;
-            const counted = obsPrMunicipaliti[name] || 0;
 
-            // Tooltip bindes én gang
-            layer.bindTooltip(`<b>${name}</b><br>${counted} observationer`, {
-                direction: 'top',
-                sticky: true
-            });
+            layer.bindTooltip(name, {direction: 'top', sticky: true});
 
             layer.on('mouseover', () => {
                 layer.setStyle({
@@ -100,6 +108,12 @@ async function addMunicipalities() {
                     fillOpacity: 0.9
                 });
                 layer.closeTooltip();
+            });
+            layer.on('click', () => {
+                const counted = obsPrMunicipaliti[name] || 0;
+                munName.textContent = `${name}`
+                munAmount.textContent = `Antal observationer: ${counted}`
+                munPeriod.textContent = `Periode: 10. oktober 1995 - 12. december 2023`
             });
         }
 
