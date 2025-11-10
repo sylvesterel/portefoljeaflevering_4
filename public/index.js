@@ -13,6 +13,16 @@ map.fitBounds(denmarkBounds);
 
 map.getContainer().style.backgroundColor = 'white';
 
+function getColor(count) {
+    return count > 100 ? '#800026' :
+        count > 50 ? '#BD0026' :
+        count > 20 ? '#E31A1C' :
+        count > 10 ? '#FC4E2A' :
+        count > 5 ? '#FD8D3C' :
+        count > 0 ? '#FEB24C' :
+                    '#FFEDA0';
+}
+
 async function fetchDataToList() {
     municipalitiesResponse = await fetch('municipalities.geojson');
     listOfMunicipalities = await municipalitiesResponse.json();
@@ -52,16 +62,19 @@ async function addMunicipalities() {
         }
     }
     L.geoJSON(listOfMunicipalities, {
-        style: {
-            color: 'black',
-            weight: 0.5,
-            fillColor: '#df3030',
-            fillOpacity: 1
+        style: feature => {
+            const name = feature.properties.label_dk;
+            const counted = obsPrMunicipaliti[name] || 0;
+            return {
+                color: 'black',
+                weight: 0.5,
+                fillColor: getColor(counted),
+                fillOpacity: 0.9
+            };
         },
 
         onEachFeature: (feature, layer) => {
             const name = feature.properties.label_dk
-            const counted = obsPrMunicipaliti[name] || 0;
 
             layer.bindTooltip(`<b>${name} - ${counted}</b>`, {direction: 'top', sticky: true});
 
