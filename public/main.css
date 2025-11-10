@@ -59,7 +59,7 @@ body{
     content: "";
     height: 8%;
     width: 8%;
-    position: absolute; left: 0; top: 5px;
+    position: absolute; left: 0; top: 0;
 }
 .content{
     max-width:5000px;
@@ -72,6 +72,7 @@ body{
     width: 100%;
     z-index: 1;
     border:1px solid #095fd8;
+    border-radius:8px;
     box-shadow: 0 4px 16px rgba(0,0,0,.35);
 }
 .counting-scheme{
