@@ -18,7 +18,7 @@ const denmarkBounds = [
 map.setMaxBounds(denmarkBounds);
 map.fitBounds(denmarkBounds);
 
-map.getContainer().style.backgroundColor = 'white';
+map.getContainer().style.backgroundColor = '#0e1628';
 
 function getColor(count) { //getColor er lavet af chatGPT
     return count > 200 ? '#002d13' :  // meget mørk grøn
