@@ -28,6 +28,7 @@ body{
     border-bottom:1px solid #0b1b31;
     position: relative;
     z-index: 1;
+    position:sticky; top:0; z-index:1500;
 }
 .brand{ display:flex; align-items:center; gap:10px; font-weight:600; color:#cfe8ff; }
 .logo-dot{ width:26px; height:26px; border-radius:50%;
@@ -106,7 +107,6 @@ body{
 
 /* Kortet med chart */
 .chart-card{
-    place-content: last;
     background:#0e1628;
     border:1px solid #095fd8;
     border-radius:8px;
