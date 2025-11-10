@@ -6,7 +6,7 @@ const express = require('express')
 dotenv.config(); // configure vores .env fil
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
@@ -17,10 +17,10 @@ const pool = mysql.createPool({
 
 app.use(express.static(path.join(process.cwd(), "public")));
 
-app.post("/update", async (req, res) => {
+app.put("/update", async (req, res) => {
     const update = await pool.execute(`UPDATE observations
-                                       SET location = "23769 Fehmarn"
-                                       WHERE id = 7`)
+                                       SET location = "4720 Præstø"
+                                       WHERE id = 4356`)
     res.send(update)
 });
 
@@ -29,7 +29,7 @@ app.listen(port, () => {
 })
 /*
 async function updateTable() {
-    const  update = await pool.execute('UPDATE observations SET location = "3230 Græsted" WHERE location = "Mårum3230 Græsted"')
+    const  update = await pool.execute('UPDATE observations SET location = "4720 Præstø" WHERE id = 4356')
 };
 
 updateTable();
