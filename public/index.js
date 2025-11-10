@@ -75,6 +75,7 @@ async function addMunicipalities() {
 
         onEachFeature: (feature, layer) => {
             const name = feature.properties.label_dk
+            const counted = obsPrMunicipaliti[name] || 0;
 
             layer.bindTooltip(`<b>${name} - ${counted}</b>`, {direction: 'top', sticky: true});
 
