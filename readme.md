@@ -1,13 +1,15 @@
 # Web & Data – Porteføljeaflevering 4
 
-## Gruppe
-Sylvester, Oscar, Christoffer
+## Information
+Oprindeligt blev data hentet direkte fra en MySQL-server (egen) med dotenv libary og en express server i projektet. For at forenkle aflevering og gøre det nemmere at tilgå og teste projektet senere, har vi ændret til at bruge en lokal JSON-fil som datakilde.
+
+Den oprindelige server.js med Express og tilhørende middleware findes stadig i projektmappen til reference.
 
 ---
 
 ## AI-Disclaimer
-Store dele af **styling** og enkelte elementer af **HTML-strukturen** er lavet med assistance fra AI, da vores fokus har været **funktionalitet, databehandling og JavaScript-logik**.  
-Alt arbejde i JavaScript-filerne er **udført og forstået manuelt** af udviklerne.
+Store dele af **styling** og enkelte elementer af **HTML-strukturen** er lavet med assistance fra AI/ChatGPT, da vores fokus har været **funktionalitet, databehandling og JavaScript**.  
+Alt arbejde i JavaScript-filerne er **udført manuelt**.
 
 ---
 
@@ -27,5 +29,5 @@ Alt arbejde i JavaScript-filerne er **udført og forstået manuelt** af udvikler
     │ └─ convert.js # Konverterer AI-genereret fremtidsdata til MySQL-format
     │
     └─ update
-        └─ main.js # Script til at rette eller opdatere fejlbehæftede data
+        └─ main.js # Script til at rette eller opdatere fejl data
 ```
