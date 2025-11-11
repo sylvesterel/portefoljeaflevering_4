@@ -84,6 +84,9 @@ body{
     padding:22px;
     position: relative;
     z-index: 1;
+    h1 {
+        text-align: center;
+    }
 }
 .page::before{
     content:"";
