@@ -19,13 +19,13 @@ Alt arbejde i JavaScript-filerne er **udført og forstået manuelt** af udvikler
 ├─ chart.js # Konfiguration af Chart.js – opbygning af grafer og datahåndtering
 │
 └─ archive
-│
-├─ server.js # Original server – henter data fra MySQL
-├─ testFile.js # Midlertidig testfil til at forstå Leaflet og interne endpoints
-│
-├─ predictions
-│ └─ convert.js # Konverterer AI-genereret fremtidsdata til MySQL-format
-│
-└─ update
-└─ main.js # Script til at rette eller opdatere fejlbehæftede data
+    │
+    ├─ server.js # Original server – henter data fra MySQL
+    ├─ testFile.js # Midlertidig testfil til at forstå Leaflet og interne endpoints
+    │
+    ├─ predictions
+    │ └─ convert.js # Konverterer AI-genereret fremtidsdata til MySQL-format
+    │
+    └─ update
+        └─ main.js # Script til at rette eller opdatere fejlbehæftede data
 ```
